@@ -4,12 +4,9 @@ from combined_recommender import smart_recommend
 
 K = 3  # top-K cutoff
 
-# ✅ Correct path resolution for both local and deployed (Render)
-CURRENT_DIR = os.path.dirname(__file__)
-BENCHMARK_PATH = os.path.join(CURRENT_DIR, "..", "benchmark", "test_queries.json")
-
-# 🔍 Debug print (optional)
-print(f"📂 Looking for benchmark file at: {BENCHMARK_PATH}")
+# ✅ Resolve the benchmark path properly for Render or local
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BENCHMARK_PATH = os.path.join(BASE_DIR, "..", "benchmark", "test_queries.json")
 
 # --- Load test queries ---
 with open(BENCHMARK_PATH, "r", encoding="utf-8") as f:
@@ -56,6 +53,10 @@ def evaluate(test_queries, top_k=K):
     print(f"📊 Mean Recall@{top_k}: {total_recall / N:.2f}")
     print(f"📊 Mean MAP@{top_k}: {total_map / N:.2f}")
 
-# Only run if called directly (not when imported)
+# Run when imported (e.g., from Streamlit app)
+def get_benchmark_queries():
+    return benchmark_queries
+
+# Or run standalone
 if __name__ == "__main__":
     evaluate(benchmark_queries)
