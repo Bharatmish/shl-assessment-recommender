@@ -59,7 +59,7 @@ SHL-ASSESSMENT-RECOMMENDER/
 
 ⚙️ Setup Instructions
 🔧 1. Clone the Repository :
-  git clone https://github.com/your-username/shl-assessment-recommender.git
+  git clone https://github.com/Bharatmish/shl-assessment-recommender.git
   cd shl-assessment-recommender
 
 📦 2. Install Requirements
