@@ -1,17 +1,25 @@
 # combined_recommender.py
 
 import json
+import os
 import numpy as np
 import faiss
 from sentence_transformers import SentenceTransformer
 from query_parser import parse_query_with_llm
 
 # --- CONFIG ---
-MAPPING_PATH = '../embeddings/index_mapping.json'
-FAISS_INDEX_PATH = '../embeddings/faiss_index.bin'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MAPPING_PATH = os.path.join(BASE_DIR, '..', 'embeddings', 'index_mapping.json')
+FAISS_INDEX_PATH = os.path.join(BASE_DIR, '..', 'embeddings', 'faiss_index.bin')
 EMBEDDING_MODEL = 'all-MiniLM-L6-v2'
 
 # --- Load all assets ---
+if not os.path.exists(MAPPING_PATH):
+    raise FileNotFoundError(f"🔴 index_mapping.json not found at: {MAPPING_PATH}")
+
+if not os.path.exists(FAISS_INDEX_PATH):
+    raise FileNotFoundError(f"🔴 faiss_index.bin not found at: {FAISS_INDEX_PATH}")
+
 with open(MAPPING_PATH, 'r', encoding='utf-8') as f:
     data = json.load(f)
 
