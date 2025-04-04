@@ -1,0 +1,10 @@
+# render.yaml
+services:
+  - type: web
+    name: shl-assessment-recommender
+    env: python
+    buildCommand: ""
+    startCommand: streamlit run src/app.py --server.port=$PORT --server.address=0.0.0.0
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10
