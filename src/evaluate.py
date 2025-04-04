@@ -4,13 +4,17 @@ from combined_recommender import smart_recommend
 
 K = 3  # top-K cutoff
 
-# ✅ Resolve the benchmark path properly for Render or local
+# ✅ Absolute path to test_queries.json
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-BENCHMARK_PATH = os.path.join(BASE_DIR, "..", "benchmark", "test_queries.json")
+BENCHMARK_PATH = os.path.abspath(os.path.join(BASE_DIR, "../benchmark/test_queries.json"))
 
 # --- Load test queries ---
-with open(BENCHMARK_PATH, "r", encoding="utf-8") as f:
-    benchmark_queries = json.load(f)
+try:
+    with open(BENCHMARK_PATH, "r", encoding="utf-8") as f:
+        benchmark_queries = json.load(f)
+except FileNotFoundError:
+    print(f"❌ File not found: {BENCHMARK_PATH}")
+    benchmark_queries = []
 
 def recall_at_k(recommended, relevant):
     if not relevant:
@@ -53,10 +57,10 @@ def evaluate(test_queries, top_k=K):
     print(f"📊 Mean Recall@{top_k}: {total_recall / N:.2f}")
     print(f"📊 Mean MAP@{top_k}: {total_map / N:.2f}")
 
-# Run when imported (e.g., from Streamlit app)
+# Streamlit-safe getter
 def get_benchmark_queries():
     return benchmark_queries
 
-# Or run standalone
-if __name__ == "__main__":
+# CLI-safe run
+if __name__ == "__main__" and benchmark_queries:
     evaluate(benchmark_queries)
